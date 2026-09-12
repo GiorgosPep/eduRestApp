@@ -1,11 +1,13 @@
 package gr.aueb.cf.eduapp.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.swing.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +33,11 @@ public class Teacher extends AbstractEntity {
     @Column(nullable = false)
     private String lastname;
 
+    @Setter(AccessLevel.PACKAGE)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
@@ -38,4 +45,15 @@ public class Teacher extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     private PersonalInfo personalInfo;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Teacher teacher)) return false;
+        return Objects.equals(getVat(), teacher.getVat());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getVat());
+    }
 }
