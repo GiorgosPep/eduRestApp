@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.osgi.annotation.bundle.Capabilities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,11 @@ public class Role {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.PACKAGE)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
 
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.PACKAGE)
@@ -44,5 +50,16 @@ public class Role {
     public void removeCapability(Capability capability) {
         capabilities.remove(capability);
         capability.getRoles().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Role role)) return false;
+        return Objects.equals(getName(), role.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getName());
     }
 }
