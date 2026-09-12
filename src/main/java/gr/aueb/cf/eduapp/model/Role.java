@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.osgi.annotation.bundle.Capabilities;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -30,6 +31,10 @@ public class Role {
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
+    public Set<User> getAllUsers() {
+        return Set.copyOf(users);
+    }
+
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.PACKAGE)
     @ManyToMany(fetch = FetchType.LAZY)
@@ -50,6 +55,20 @@ public class Role {
     public void removeCapability(Capability capability) {
         capabilities.remove(capability);
         capability.getRoles().remove(this);
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+        user.setRole(this);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+        user.setRole(null);
+    }
+
+    public void assUsers(Collection<User> users) {
+        users.forEach(this::addUser);
     }
 
     @Override

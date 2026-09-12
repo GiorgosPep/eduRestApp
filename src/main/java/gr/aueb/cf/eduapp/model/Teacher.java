@@ -46,6 +46,16 @@ public class Teacher extends AbstractEntity {
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     private PersonalInfo personalInfo;
 
+    public void addUser(User user) {
+        this.user = user;
+        user.setTeacher(this);
+    }
+
+    public void removeUser() {
+        this.user = null;
+        user.setTeacher(null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Teacher teacher)) return false;
