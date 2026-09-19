@@ -46,7 +46,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         role.getCapabilities().forEach(capability ->
                 grantedAuthorities.add(new SimpleGrantedAuthority(capability.getName())));
         return grantedAuthorities;
