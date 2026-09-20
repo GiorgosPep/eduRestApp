@@ -4,7 +4,6 @@ import gr.aueb.cf.eduapp.core.exceptions.*;
 import gr.aueb.cf.eduapp.dto.ErrorResponseDTO;
 import gr.aueb.cf.eduapp.dto.ValidationErrorResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
