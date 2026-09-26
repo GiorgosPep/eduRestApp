@@ -1,9 +1,19 @@
 package gr.aueb.cf.eduapp.specification;
 
+import gr.aueb.cf.eduapp.core.filters.TeacherFilters;
 import gr.aueb.cf.eduapp.model.Teacher;
 import org.springframework.data.jpa.domain.Specification;
 
 public class TeacherSpecification {
+
+    public static Specification<Teacher> build(TeacherFilters filters) {
+        return Specification.allOf(
+        hasLastName(filters.getLastname()),
+        hasRegion(filters.getRegion()),
+        isDeleted(filters.isDeleted())
+                );
+
+    }
 
     public static Specification<Teacher> hasLastName(String lastname) {
         return((root, query, criteriaBuilder) -> lastname == null ? criteriaBuilder.conjunction() :
