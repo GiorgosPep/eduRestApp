@@ -39,7 +39,7 @@ public class Region {
         teacher.setRegion(this);
     }
 
-    private void removeTeacher(Teacher teacher) {
+    public void removeTeacher(Teacher teacher) {
         teachers.remove(teacher);
         teacher.setRegion(null);
     }
