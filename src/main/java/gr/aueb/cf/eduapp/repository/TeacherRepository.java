@@ -20,7 +20,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, JpaSpec
     Optional<Teacher> findByPersonalInfo_Amka(String amka);
 
     @EntityGraph(attributePaths = {"personalInfo", "region"})
-    Page<Teacher> findByDeletedFalse(Pageable pageable);
+    Page<Teacher> findAllByDeletedFalse(Pageable pageable);
 
     boolean existsByUuidAndUser_Uuid(UUID techerUuid, UUID userUuid);
 

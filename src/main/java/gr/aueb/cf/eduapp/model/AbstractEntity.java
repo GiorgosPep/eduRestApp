@@ -34,7 +34,7 @@ public class AbstractEntity {
     @Column(name="deleted_at", columnDefinition = "DATETIME")
     private Instant deletedAt;
 
-    private void softDelete() {
+    public void softDelete() {
         this.deleted = true;
         this.deletedAt = Instant.now();
     }

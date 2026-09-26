@@ -216,28 +216,53 @@ public class TeacherService implements ITeacherService{
     }
 
     @Override
+    @Transactional(rollbackFor = EntityNotFoundException.class)
     public TeacherReadOnlyDTO deleteTeacherByUUID(UUID uuid) throws EntityNotFoundException {
-        return null;
+        Teacher teacher = teacherRepository.findByUuidDeletedFalse(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher", "Teacher with uuid = " +
+                        uuid + " not found"));
+        teacher.softDelete();
+        teacher.getPersonalInfo().softDelete();
+        teacher.getUser().softDelete();
+
+        // No save is needed if Teacher is managed
+        // teacherRepostitory.save(teacher);
+        log.info("Teacher with uuid={} deleted successfully", uuid);
+        return mapper.mapToTeacherReadOnlyDTO(teacher);
     }
 
     @Override
     public TeacherReadOnlyDTO getTeacherByUUID(UUID uuid) throws EntityNotFoundException {
-        return null;
+         Teacher teacher = teacherRepository.findByUuid(uuid)
+                 .orElseThrow(() -> new EntityNotFoundException("Teacher", "Teacher with uuid= "
+                 + uuid + (" does not found")));
+         log.info("Teacher with uuid={} found successfully", uuid);
+         return mapper.mapToTeacherReadOnlyDTO(teacher);
     }
 
     @Override
     public TeacherReadOnlyDTO getTeacherByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException {
-        return null;
+        Teacher teacher = teacherRepository.findByUuidDeletedFalse(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher", "Teacher with uuid= "
+                        + uuid + (" does not found")));
+        log.info("Teacher with uuid={} returned successfully", uuid);
+        return mapper.mapToTeacherReadOnlyDTO(teacher);
     }
 
     @Override
     public Page<TeacherReadOnlyDTO> getPaginatedTeachers(Pageable pageable) {
-        return null;
+        Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
+        log.debug("Get paginated returned successfully, page={}, size={}",
+                teacherPage.getNumber(), teacherPage.getSize());
+        return teacherPage.map(mapper::mapToTeacherReadOnlyDTO);
     }
 
     @Override
     public Page<TeacherReadOnlyDTO> getPaginatedTeachersDeletedFalse(Pageable pageable) {
-        return null;
+        Page<Teacher> teacherPage = teacherRepository.findAllByDeletedFalse(pageable);
+        log.debug("Get paginated not deleted returned successfully, page={}, size={}",
+                teacherPage.getNumber(), teacherPage.getSize());
+        return teacherPage.map(mapper::mapToTeacherReadOnlyDTO);
     }
 
     @Override
