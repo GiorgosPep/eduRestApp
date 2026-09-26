@@ -79,6 +79,31 @@ public class TeacherRestController {
                 .body(teacherReadOnlyDTO);
     }
 
+    @Operation(
+            summary = "Upload AMKA attachment file for a teacher",
+            description = "Uploads a teacher's AMKA document file. Replaces existing file if present."
+    )
+
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "File uploaded successfully"
+            ),
+
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Teacher not found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            ),
+
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "File upload failed",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
     @PostMapping("/uuid/amka-file")
     public ResponseEntity<Void> uploadAmkaFile(
             @PathVariable UUID uuid,
