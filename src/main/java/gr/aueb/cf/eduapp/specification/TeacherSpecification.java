@@ -25,7 +25,7 @@ public class TeacherSpecification {
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("region")), "%" + region.toLowerCase() + "%"));
     }
 
-    public static Specification<Teacher> isDeleted(boolean deleted) {       // defualt is false
+    public static Specification<Teacher> isDeleted(boolean deleted) {       // default is false
         return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("deleted"), deleted));
     }
 }
