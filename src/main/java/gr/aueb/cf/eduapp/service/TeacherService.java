@@ -266,8 +266,9 @@ public class TeacherService implements ITeacherService{
     }
 
     @Override
-    public Page<TeacherReadOnlyDTO> getTeachersPaginatedFiltered(Pageable pageable, TeacherFilters filters) throws EntityNotFoundException {
-        return null;
+    public Page<TeacherReadOnlyDTO> getTeachersPaginatedFiltered(Pageable pageable, TeacherFilters filters)
+            throws EntityNotFoundException {
+
     }
 
     private String getFileExtension(String filename) {
